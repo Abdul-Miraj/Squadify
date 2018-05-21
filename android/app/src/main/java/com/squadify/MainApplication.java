@@ -3,6 +3,7 @@ package com.squadify;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.lufinkey.react.eventemitter.RNEventEmitterPackage;
 import com.lufinkey.react.spotify.RNSpotifyPackage;
@@ -27,10 +28,10 @@ public class MainApplication extends NavigationApplication {
         // Add additional packages you require here
         // No need to add RnnPackage and MainReactPackage
         return Arrays.<ReactPackage>asList(
-                // eg. new VectorIconsPackage()
                 new RNEventEmitterPackage(),
                 new RNSpotifyPackage(),
-                new LinearGradientPackage()
+                new LinearGradientPackage(),
+                new VectorIconsPackage()
         );
     }
 

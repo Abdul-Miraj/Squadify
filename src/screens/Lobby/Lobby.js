@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Text, Button } from "react-native";
+import { View, StyleSheet, Text, Button, Linking } from "react-native";
+import startMainTabs from "../MainTabs/startMainTabs";
 
 import Spotify from "rn-spotify-sdk";
 
@@ -18,7 +19,7 @@ class Lobby extends Component {
       var spotifyOptions = {
         clientID: "dda6343c29ab4fe58235ddf78a2c01e8",
         sessionUserDefaultsKey: "SpotifySession",
-        redirectURL: "https://google.com",
+        redirectURL: "squadify://Lobby",
         scopes: [
           "user-read-private",
           "playlist-read",
@@ -32,7 +33,7 @@ class Lobby extends Component {
           this.setState({ spotifyInitialized: true });
           // handle initialization
           if (loggedIn) {
-            alert("YOU ARE LOGGED IN");
+            startMainTabs();
           }
         })
         .catch(error => {
@@ -57,8 +58,26 @@ class Lobby extends Component {
       .then(loggedIn => {
         if (loggedIn) {
           // logged in
-          console.log("LOGGED IN");
-          alert("YOU ARE LOGGED IN");
+          startMainTabs();
+        } else {
+          // cancelled
+          console.log("CANCELLED");
+        }
+      })
+      .catch(error => {
+        // error
+        console.log("ERROR");
+        alert("Error", error.message);
+      });
+  };
+
+  spotifyLogOutButtonHandler = () => {
+    // log into Spotify
+    Spotify.logout()
+      .then(loggedOut => {
+        if (loggedOut) {
+          // logged out
+          alert("LOGGED OUT");
         } else {
           // cancelled
           console.log("CANCELLED");
@@ -72,19 +91,32 @@ class Lobby extends Component {
   };
 
   render() {
+    let logInOutBtn = null;
+    if (Spotify.isLoggedIn()) {
+      logInOutBtn = (
+        <Button
+          color="#84bd00"
+          title="Log Out"
+          onPress={this.spotifyLogOutButtonHandler}
+        />
+      );
+    } else {
+      logInOutBtn = (
+        <Button
+          color="#84bd00"
+          title="Log In With Spotify"
+          onPress={this.spotifyLogInButtonHandler}
+        />
+      );
+    }
+
     return (
       <View style={styles.container}>
         <View style={styles.logoContainer}>
           <Text style={styles.logoText}>Squadify</Text>
         </View>
 
-        <View style={styles.logInBtnContainer}>
-          <Button
-            color="#84bd00"
-            title="Log in With Spotify"
-            onPress={this.spotifyLogInButtonHandler}
-          />
-        </View>
+        <View style={styles.logInBtnContainer}>{logInOutBtn}</View>
       </View>
     );
   }
