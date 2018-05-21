@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import Header from '../Header/Header';
-import SongDisplay from '../SongDisplay/SongDisplay';
-import Player from '../Player/Player';
-import Nav from '../Nav/Nav';
+import Header from '../../components/Header/Header'
+import SongDisplay from '../../components/SongDisplay/SongDisplay';
+import Player from '../../components/Player/Player';
 
 class PlayerLayout extends Component {
 
@@ -14,7 +13,6 @@ class PlayerLayout extends Component {
                 <Header />
                 <SongDisplay />
                 <Player />
-                <Nav />
             </View>
         );
     }
