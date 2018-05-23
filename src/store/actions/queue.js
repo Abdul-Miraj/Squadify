@@ -3,7 +3,7 @@ import { ADD_SONG, DELETE_SONG } from './actionTypes';
 export const addSong = (songInfo) => {
     return {
         type: ADD_SONG,
-        songId: songInfo
+        songInfo: songInfo
     }
 };
 

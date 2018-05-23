@@ -1,15 +1,21 @@
 import React from "react";
 import { View, ScrollView, StyleSheet, Text, Button } from "react-native";
 import { connect } from "react-redux";
+import Icon from "react-native-vector-icons/Ionicons";
 import Spotify from "rn-spotify-sdk";
 
 const player = props => {
   const currSong = props.queue[props.position];
 
+  // queue is empty
+  if (currSong === undefined) {
+    return <View />;
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView
-        contentContainerStyle={styles.songInfoContainer}
+        contentContainerStyle={styles.songInfoScrollContainer}
         horizontal={true}
       >
         <Text style={styles.songText}>{currSong.songName}</Text>
@@ -18,14 +24,9 @@ const player = props => {
       </ScrollView>
 
       <View style={styles.playBackBtnsContainer}>
-        <Button
-          style={styles.btn}
-          title="SkipB"
-          color="transparent"
-          onPress=""
-        />
-        <Button title="SkipF" color="transparent" onPress="" />
-        <Button title="Play" color="transparent" onPress="Play" />
+        <Icon name="ios-skip-backward" style={{ width: 10, color: "white" }} />
+        <Icon name="ios-skip-forward" style={{ width: 10, color: "white" }} />
+        <Icon name="ios-play" style={{ width: 10, color: "white" }} />
       </View>
     </View>
   );
@@ -40,17 +41,19 @@ const styles = StyleSheet.create({
     borderBottomColor: "black"
   },
 
-  songInfoContainer: {
-    flex: 1.5,
+  songInfoScrollContainer: {
+    flex: 1,
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    marginLeft: 10,
+    marginRight: 10
   },
 
   playBackBtnsContainer: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "space-around"
   },
 
   songText: {

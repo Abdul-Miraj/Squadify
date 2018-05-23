@@ -58,7 +58,7 @@ class SongDisplay extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 10
+    flex: 6
   }
 });
 

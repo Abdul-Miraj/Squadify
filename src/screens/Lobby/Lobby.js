@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Text, Button, Linking } from "react-native";
+//import { connect } from "react-redux";
+//import { setSpotify } from "../../store/actions/index";
+
+import startSingleScreen from "../SingleScreen/startSingleScreen";
 import startMainTabs from "../MainTabs/startMainTabs";
 
 import Spotify from "rn-spotify-sdk";
@@ -9,7 +13,6 @@ class Lobby extends Component {
     super();
     this.state = {
       spotifyInitialized: false,
-      logged: false
     };
   }
 
@@ -34,7 +37,7 @@ class Lobby extends Component {
           // handle initialization
           if (loggedIn) {
             startMainTabs();
-            this.setState({ spotifyInitialized: true, logged: true });
+            this.setState({ spotifyInitialized: true});
           } else {
             this.setState({ spotifyInitialized: true });
           }
@@ -50,7 +53,7 @@ class Lobby extends Component {
       });
       // handle logged in
       if (Spotify.isLoggedIn()) {
-        this.setState({ logged: true });
+        //
       }
     }
   }
@@ -79,7 +82,7 @@ class Lobby extends Component {
       .then(loggedOut => {
         if (!Spotify.isLoggedIn()) {
           // logged out
-          this.setState({logged: false});
+          startSingleScreen();
         } else {
           // cancelled
           alert("Log out was cancelled", loggedOut);
@@ -93,7 +96,7 @@ class Lobby extends Component {
 
   render() {
     let logInOutBtn = null;
-    if (this.state.logged) {
+    if (Spotify.isLoggedIn()) {
       logInOutBtn = (
         <Button
           color="#84bd00"
