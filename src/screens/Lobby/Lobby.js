@@ -8,7 +8,8 @@ class Lobby extends Component {
   constructor() {
     super();
     this.state = {
-      spotifyInitialized: false
+      spotifyInitialized: false,
+      logged: false
     };
   }
 
@@ -30,10 +31,12 @@ class Lobby extends Component {
       Spotify.initialize(spotifyOptions)
         .then(loggedIn => {
           // update UI state
-          this.setState({ spotifyInitialized: true });
           // handle initialization
           if (loggedIn) {
             startMainTabs();
+            this.setState({ spotifyInitialized: true, logged: true });
+          } else {
+            this.setState({ spotifyInitialized: true });
           }
         })
         .catch(error => {
@@ -47,7 +50,7 @@ class Lobby extends Component {
       });
       // handle logged in
       if (Spotify.isLoggedIn()) {
-        alert("YOU ARE LOGGED IN");
+        this.setState({ logged: true });
       }
     }
   }
@@ -61,12 +64,11 @@ class Lobby extends Component {
           startMainTabs();
         } else {
           // cancelled
-          console.log("CANCELLED");
+          alert("Log in was cancelled");
         }
       })
       .catch(error => {
         // error
-        console.log("ERROR");
         alert("Error", error.message);
       });
   };
@@ -75,24 +77,23 @@ class Lobby extends Component {
     // log into Spotify
     Spotify.logout()
       .then(loggedOut => {
-        if (loggedOut) {
+        if (!Spotify.isLoggedIn()) {
           // logged out
-          alert("LOGGED OUT");
+          this.setState({logged: false});
         } else {
           // cancelled
-          console.log("CANCELLED");
+          alert("Log out was cancelled", loggedOut);
         }
       })
       .catch(error => {
         // error
-        console.log("ERROR");
         alert("Error", error.message);
       });
   };
 
   render() {
     let logInOutBtn = null;
-    if (Spotify.isLoggedIn()) {
+    if (this.state.logged) {
       logInOutBtn = (
         <Button
           color="#84bd00"

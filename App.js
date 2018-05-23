@@ -10,6 +10,7 @@ const store = configureStore();
 
 Navigation.registerComponent("squadify.Lobby", () => LobbyScreen, store, Provider);
 Navigation.registerComponent("squadify.PlayerLayout", () => PlayerLayout, store, Provider);
+Navigation.registerComponent("squadify.Search", () => PlayerLayout, store, Provider);
 
 Navigation.startSingleScreenApp({
   screen: {
