@@ -44,6 +44,7 @@ class SongDisplay extends Component {
                 songName={info.item.songName}
                 artistNames={info.item.artistNames}
                 albumName={info.item.albumName}
+                playing={info.item.playing}
                 onModalOpened={() =>
                   this.songItemSelectedHandler(info.item.key)
                 }

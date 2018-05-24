@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 
 import Header from '../../components/Header/Header'
 import SongDisplay from '../../components/SongDisplay/SongDisplay';
-import Player from '../../components/Player/Player';
+import SpotifyPlayer from '../../components/SpotifyPlayer/SpotifyPlayer';
 
 class PlayerLayout extends Component {
 
@@ -12,7 +12,7 @@ class PlayerLayout extends Component {
             <View style={styles.container}>
                 <Header />
                 <SongDisplay />
-                <Player />
+                <SpotifyPlayer />
             </View>
         );
     }

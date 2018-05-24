@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Text, Button, Linking } from "react-native";
-//import { connect } from "react-redux";
-//import { setSpotify } from "../../store/actions/index";
 
 import startSingleScreen from "../SingleScreen/startSingleScreen";
 import startMainTabs from "../MainTabs/startMainTabs";
