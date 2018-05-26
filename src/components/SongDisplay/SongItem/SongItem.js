@@ -10,12 +10,12 @@ import {
 const songItem = props => {
   let isPlaying = styles.songText;
 
-  if (props.playing === true) {
+  if (props.positionPlaying === props.myPosition) {
     isPlaying = styles.songTextSelected;
   }
 
   return (
-    <TouchableHighlight onLongPress={props.onModalOpened} underlayColor="black">
+    <TouchableHighlight onPress={props.onSongItemClicked} onLongPress={props.onModalOpened} underlayColor="black">
       <View style={styles.container}>
         <View style={styles.songInfoContainer}>
           <View>

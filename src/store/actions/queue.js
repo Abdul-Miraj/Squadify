@@ -7,10 +7,10 @@ export const addSong = (songInfo) => {
     }
 };
 
-export const deleteSong = (tarKey) => {
+export const deleteSong = (key) => {
     return {
         type: DELETE_SONG,
-        key: tarKey
+        key: key
     }
 };
 

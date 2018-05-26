@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, ScrollView, StyleSheet, Text, Button } from "react-native";
 import { connect } from "react-redux";
-import { pauseSong, changeSong } from "../../store/actions/index";
+import { changeSong } from "../../store/actions/index";
 import Icon from "react-native-vector-icons/Ionicons";
 import Spotify from "rn-spotify-sdk";
 
@@ -10,19 +10,37 @@ class SpotifyPlayer extends Component {
     playing: true
   };
 
-  playSpotifySong = currSong => {
+  componentDidMount() {
+    // play songs from begining of queue
+    if (this.props.position === -1 && this.props.queue.length > 0) {
+      this.props.onChangeSong(0);
+    } else {
+      this.playSpotifySong();
+    }
+  }
+
+  componentWillUpdate(nextProps) {
+    if(this.props.queue[this.props.position] !== undefined) {
+      if((this.props.queue[this.props.position].key !== nextProps.queue[nextProps.position].key) && (nextProps.queue.length > 0)){
+        Spotify.playURI(nextProps.queue[nextProps.position].key, 0, 0);
+      }
+    }
+  }
+
+  playSpotifySong = () => {
+    const currSong = this.props.queue[this.props.position];
     if (currSong === null) {
       return false;
     } else {
-      Spotify.playURI(currSong.spotifyURI, 0, 0);
+      Spotify.playURI(currSong.key, 0, 0);
       return true;
     }
   };
-
+  o;
   skipNextSong = currSong => {
     const newPosition = this.props.position + 1;
 
-    if (newPosition <= (this.props.queue.length - 1)) {
+    if (newPosition <= this.props.queue.length - 1) {
       this.props.onChangeSong(newPosition);
     }
   };
@@ -60,7 +78,6 @@ class SpotifyPlayer extends Component {
 
     // check playing status of song and change icon accordingly
     if (this.state.playing === true) {
-      this.playSpotifySong(currSong);
       playOrPause = "ios-pause";
     }
 
