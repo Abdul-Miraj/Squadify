@@ -11,8 +11,19 @@ import {
 import LinearGradient from "react-native-linear-gradient";
 
 const songModal = props => {
+  const modalOptions = props.modalOptions.map((option, index) => {
+    return (
+      <Button
+        key={index}
+        title={option.value}
+        onPress={option.action}
+        color="transparent"
+      />
+    );
+  });
+
   let modalContent = null;
-  if (props.selectedSong) {
+  if (props.selectedTrack) {
     modalContent = (
       <LinearGradient
         colors={["transparent", "black"]}
@@ -22,31 +33,20 @@ const songModal = props => {
         <View style={styles.modalContainer}>
           <View style={styles.imageContainer}>
             <Image
-              source={{ uri: props.selectedSong.songImage }}
+              source={{ uri: props.selectedTrack.songImage }}
               style={styles.songImage}
             />
           </View>
           <View style={styles.songInfoContainer}>
             <Text style={styles.songNameText}>
-              {props.selectedSong.songName}
+              {props.selectedTrack.songName}
             </Text>
             <Text style={styles.artistNameText}>
-              {props.selectedSong.artistNames}
+              {props.selectedTrack.artistNames}
             </Text>
           </View>
           <ScrollView style={styles.btnContainer}>
-            <Button
-              style={styles.addSongToSpotifyBtn}
-              title="Add song to Spotify"
-              onPress={props.onModalClosed}
-              color="transparent"
-            />
-            <Button
-              style={styles.removeFromQueueBtn}
-              title="Remove from Queue"
-              onPress={props.onDeleteFromQueue}
-              color="transparent"
-            />
+          {modalOptions}
           </ScrollView>
         </View>
       </LinearGradient>
@@ -55,10 +55,10 @@ const songModal = props => {
 
   return (
     <Modal
-      visible={props.selectedSong !== null}
+      visible={props.selectedTrack !== null}
       animationType="slide"
       onRequestClose={props.onModalClosed}
-      style={styles.modalContainer}
+      style={props.onModalClosed}
       transparent={true}
     >
       {modalContent}

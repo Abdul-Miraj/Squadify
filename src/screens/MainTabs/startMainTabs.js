@@ -5,12 +5,11 @@ const startTabs = () => {
   Promise.all([
     Icon.getImageSource("md-home", 30),
     Icon.getImageSource("ios-musical-notes", 30),
-    Icon.getImageSource("ios-search", 30)
   ]).then(sources => {
     Navigation.startTabBasedApp({
       tabs: [
         {
-          screen: "squadify.Lobby",
+          screen: "squadify.home",
           label: "Home",
           icon: sources[0],
           navigatorStyle: { navBarHidden: true }
@@ -22,13 +21,6 @@ const startTabs = () => {
           icon: sources[1],
           navigatorStyle: { navBarHidden: true }
         },
-
-        {
-          screen: "squadify.Search",
-          label: "Search",
-          icon: sources[2],
-          navigatorStyle: { navBarHidden: true }
-        }
       ],
       tabsStyle: { 
         tabBarButtonColor: '#797a7e', 

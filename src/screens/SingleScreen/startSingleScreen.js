@@ -3,7 +3,7 @@ import { Navigation } from "react-native-navigation";
 const startSS = () => {
   Navigation.startSingleScreenApp({
     screen: {
-      screen: "squadify.Lobby",
+      screen: "squadify.home",
       navigatorStyle: { navBarHidden: true }
     },
     animationType: "none"

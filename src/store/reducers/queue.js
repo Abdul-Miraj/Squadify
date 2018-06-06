@@ -1,41 +1,23 @@
 import { ADD_SONG, DELETE_SONG, CHANGE_SONG } from "../actions/actionTypes";
 
 const initialState = {
-  queue: [
-    {
-      key: "spotify:track:5H0OPOKDVbZtD9pPTFKRuF",
-      songImage:
-        "https://i.scdn.co/image/d0186ad64df7d6fc5f65c20c7d16f4279ffeb815",
-      songName: "Instances",
-      artistNames: ["Lias"],
-      albumName: "Give Me One More"
-    },
-    {
-      key: "spotify:track:1wsf1YFQSYND45y0GzJmf7",
-      songImage:
-        "https://i.scdn.co/image/d0186ad64df7d6fc5f65c20c7d16f4279ffeb815",
-      songName: "Yes Indeed",
-      artistNames: ["Lil Baby", "Drake"],
-      albumName: "Yes Indeed"
-    },
-    {
-      key: "spotify:track:6NWl2m8asvH83xjuXVNsuG",
-      songImage:
-        "https://i.scdn.co/image/d0186ad64df7d6fc5f65c20c7d16f4279ffeb815",
-      songName: "Betrayed",
-      artistNames: ["Lil Xan"],
-      albumName: "Betrayed"
-    }
-  ],
-  position: -1
+  queue: [],
+  position: -2
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_SONG:
+      let newPosition = state.position;
+
+      if (state.position === -2) {
+        newPosition = state.queue.length;
+      }
+
       return {
         ...state,
-        queue: state.queue.concat([action.songInfo])
+        queue: state.queue.concat([action.songInfo]),
+        position: newPosition
       };
     case DELETE_SONG:
       const currPos = state.position;
@@ -47,7 +29,7 @@ const reducer = (state = initialState, action) => {
         }
       });
 
-      let updatedPos = -1;
+      let updatedPos = -2;
 
       // when the song being deleted comes before the song being played
       if (currPos > deletePos) {
@@ -81,20 +63,16 @@ const reducer = (state = initialState, action) => {
       };
 
     case CHANGE_SONG:
-      const updatedQueue = state.queue.map((song, index) => {
-        if (index === state.position) {
-          song.playing = false;
-        } else if (index === action.position) {
-          song.playing = true;
-        }
-        return song;
-      });
 
-      return {
-        ...state,
-        queue: updatedQueue,
-        position: action.position
-      };
+      const newPos = action.position;
+
+      if(((newPos <= state.queue.length - 1) && (newPos >= 0)) || (newPos === -2)){
+        return {
+          ...state,
+          position: newPos
+        };
+      }
+
     default:
       return state;
   }

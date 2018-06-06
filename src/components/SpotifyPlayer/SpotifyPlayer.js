@@ -11,49 +11,69 @@ class SpotifyPlayer extends Component {
   };
 
   componentDidMount() {
-    // play songs from begining of queue
-    if (this.props.position === -1 && this.props.queue.length > 0) {
-      this.props.onChangeSong(0);
-    } else {
-      this.playSpotifySong();
-    }
+    Spotify.addListener("audioDeliveryDone", () => {
+      let newPos = this.props.position + 1;
+
+      if(this.props.queue.length - 1 >= newPos){
+        this.onChangeSong(newPos);
+      } else {
+        newPos = -2
+        this.onChangeSong(newPos);
+      }
+      
+    });
   }
 
-  componentWillUpdate(nextProps) {
-    if(this.props.queue[this.props.position] !== undefined) {
-      if((this.props.queue[this.props.position].key !== nextProps.queue[nextProps.position].key) && (nextProps.queue.length > 0)){
-        Spotify.playURI(nextProps.queue[nextProps.position].key, 0, 0);
+  shouldComponentUpdate(nextProps, nextState) {
+    const prevTrack = this.props.queue[this.props.position];
+    const nextTrack = nextProps.queue[nextProps.position];
+
+    // when going from no current song playing to playing a song
+    if (this.props.position === -2 && nextProps.position !== -2) {
+      this.playSpotifySong(nextTrack.key);
+    }
+
+    // when the user switches songs
+    else if (prevTrack !== undefined && nextTrack !== undefined) {
+      // if the uri of the next track doesn't match the uri of the prev track then play that song
+      if (prevTrack.key !== nextTrack.key) {
+        this.playSpotifySong(nextTrack.key);
       }
     }
+
+    // TODO://
+    // stop the music when nextProps recieves a stop signal
+    else if (nextProps.position === -2) {
+      Spotify.skipToNext();
+    }
+    
+    else {
+      alert("This isn't supposed to happen :/");
+    }
+
+    return true;
   }
 
-  playSpotifySong = () => {
-    const currSong = this.props.queue[this.props.position];
-    if (currSong === null) {
+  playSpotifySong = songURI => {
+    if (songURI === null) {
+      this.setState({
+        playing: false
+      });
       return false;
     } else {
-      Spotify.playURI(currSong.key, 0, 0);
+      Spotify.playURI(songURI, 0, 0);
+      this.setState({
+        playing: true
+      });
       return true;
     }
   };
-  o;
-  skipNextSong = currSong => {
-    const newPosition = this.props.position + 1;
 
-    if (newPosition <= this.props.queue.length - 1) {
-      this.props.onChangeSong(newPosition);
-    }
-  };
+  onChangeSong = qPos => {
+    this.props.onChangeSong(qPos);
+  }
 
-  skipPrevSong = currSong => {
-    const newPosition = this.props.position - 1;
-
-    if (newPosition >= 0) {
-      this.props.onChangeSong(newPosition);
-    }
-  };
-
-  togglePause = currSong => {
+  togglePause = () => {
     if (Spotify.getPlaybackState().playing === false) {
       Spotify.setPlaying(true);
       this.setState({
@@ -68,12 +88,15 @@ class SpotifyPlayer extends Component {
   };
 
   render() {
-    const currSong = this.props.queue[this.props.position];
+    let currSong = this.props.queue[this.props.position];
     let playOrPause = "ios-play";
 
     // play curr song if queue is not empty
     if (currSong === undefined) {
-      return <View />;
+      currSong = {
+        name: 'Queue up a song!',
+        albumName: 'SQUADIFY'
+      };
     }
 
     // check playing status of song and change icon accordingly
@@ -87,26 +110,26 @@ class SpotifyPlayer extends Component {
           contentContainerStyle={styles.songInfoScrollContainer}
           horizontal={true}
         >
-          <Text style={styles.songText}>{currSong.songName}</Text>
+          <Text style={styles.songText}>{currSong.name}</Text>
           <Text style={styles.dividerText}> • </Text>
-          <Text style={styles.albumText}>{currSong.albumName}</Text>
+          <Text style={styles.albumText}>{currSong.artistNames}</Text>
         </ScrollView>
 
         <View style={styles.playBackBtnsContainer}>
           <Icon.Button
             name="ios-skip-backward"
             backgroundColor="transparent"
-            onPress={() => this.skipPrevSong(currSong)}
+            onPress={() => this.onChangeSong(this.props.position - 1)}
           />
           <Icon.Button
             name="ios-skip-forward"
             backgroundColor="transparent"
-            onPress={() => this.skipNextSong(currSong)}
+            onPress={() => this.onChangeSong(this.props.position + 1)}
           />
           <Icon.Button
             name={playOrPause}
             backgroundColor="transparent"
-            onPress={() => this.togglePause(currSong)}
+            onPress={() => this.togglePause()}
           />
         </View>
       </View>

@@ -17,11 +17,12 @@ class Lobby extends Component {
   componentDidMount() {
     // initialize Spotify if it hasn't been initialized yet
     if (!Spotify.isInitialized()) {
+      console.log("not intialized");
       // initialize spotify
       var spotifyOptions = {
         clientID: "dda6343c29ab4fe58235ddf78a2c01e8",
         sessionUserDefaultsKey: "SpotifySession",
-        redirectURL: "squadify://Lobby",
+        redirectURL: "squadify://home",
         scopes: [
           "user-read-private",
           "playlist-read",
@@ -31,6 +32,7 @@ class Lobby extends Component {
       };
       Spotify.initialize(spotifyOptions)
         .then(loggedIn => {
+          console.log("LOGGED SUCESS")
           // update UI state
           // handle initialization
           if (loggedIn) {
