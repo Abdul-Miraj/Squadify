@@ -1,26 +1,16 @@
-import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Button
-} from 'react-native';
+import { Navigation } from 'react-native-navigation';
+import { Provider } from 'react-redux';
 
-import PlayerLayout from './src/components/PlayerLayout/PlayerLayout';
+import startSingleScreen from './src/screens/SingleScreen/startSingleScreen';
 
- class App extends Component {
+import LobbyScreen from './src/screens/Lobby/Lobby';
+import PlayerLayout from './src/screens/PlayerLayout/PlayerLayout';
 
-  render() {
-    return (
-      <PlayerLayout />
-    );
-  }
-}
+import configureStore from './src/store/configureStore';
 
-const styles = StyleSheet.create({
+const store = configureStore();
 
-});
+Navigation.registerComponent('squadify.home', () => LobbyScreen, store, Provider);
+Navigation.registerComponent('squadify.PlayerLayout', () => PlayerLayout, store, Provider);
 
-export default App;
+startSingleScreen();

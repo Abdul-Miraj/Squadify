@@ -1,1 +1,1 @@
-export { addSong, deleteSong } from './queue';
+export { addSong, deleteSong, changeSong, pauseSong } from './queue';
