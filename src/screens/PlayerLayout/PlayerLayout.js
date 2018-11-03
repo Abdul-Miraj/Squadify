@@ -6,7 +6,8 @@ import { changeSong, deleteSong, addSong } from "../../store/actions/index";
 import Header from "../../components/Header/Header";
 import SongDisplay from "../../components/SongDisplay/SongDisplay";
 import SpotifyPlayer from "../../components/SpotifyPlayer/SpotifyPlayer";
-import SearchModal from "../../components/SearchModal/SearchModal";
+import SearchBtn from "../../components/Search/SearchBtn";
+import SearchModal from "../../components/Search/SearchModal";
 
 class PlayerLayout extends Component {
   state = {
@@ -16,10 +17,12 @@ class PlayerLayout extends Component {
   onModalOpenHandler = () => {
     if (this.state.onSearchModalOpen === false) {
       this.setState({
+        ...this.state,
         onSearchModalOpen: true
       });
     } else {
       this.setState({
+        ...this.state,
         onSearchModalOpen: false
       });
     }
@@ -37,7 +40,7 @@ class PlayerLayout extends Component {
           onSearchModalOpen={this.state.onSearchModalOpen}
           onSearchModelHandler={() => this.onModalOpenHandler()}
         />
-        <Header onModalOpen={() => this.onModalOpenHandler()} />
+        <Header rightComponent={<SearchBtn onModalOpenHandler={this.onModalOpenHandler}/>}/>
         <SongDisplay
           data={songDisplayData}
           onClick={key => this.props.onChangeSong(key)}

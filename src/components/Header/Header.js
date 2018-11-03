@@ -1,24 +1,20 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
 
 const header = props => {
+  if (props.leftComponent === undefined) {
+    props.leftComponent = null;
+  } else if (props.rightComponent === undefined) {
+    props.rightComponent = null;
+  }
+
   return (
     <View style={styles.container}>
-      <View style={styles.leftHeader}>
-        <Text />
-      </View>
+      <View style={styles.leftHeader}>{props.leftComponent}</View>
       <View style={styles.centerHeader}>
         <Text style={styles.headerText}>Squadify</Text>
       </View>
-      <View style={styles.rightHeader}>
-        <Icon.Button
-          name="ios-search"
-          backgroundColor="transparent"
-          style={styles.searchBtn}
-          onPress={props.onModalOpen}
-        />
-      </View>
+      <View style={styles.rightHeader}>{props.rightComponent}</View>
     </View>
   );
 };

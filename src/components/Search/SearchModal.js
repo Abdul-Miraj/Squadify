@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import { View, StyleSheet, Modal } from "react-native";
 import Spotify from "rn-spotify-sdk";
 
-import Search from "../Search/Search";
+import SearchBar from "./SearchBar";
 import SongDisplay from "../SongDisplay/SongDisplay";
-import SpotifyPlayer from "../SpotifyPlayer/SpotifyPlayer";
 import Track from "../../models/Track";
 
 class SearchModal extends Component {
@@ -42,7 +41,7 @@ class SearchModal extends Component {
 
   renderHead = () => {
     return (
-      <Search
+      <SearchBar
         onSearchRequest={searchQuery => this.onSearchHandler(searchQuery)}
       />
     );
