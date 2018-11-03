@@ -71,23 +71,35 @@ class SongDisplay extends Component {
   render() {
     const modalView = this.setModalOptionsHandler(this.props.modalOptions);
 
+    let onSongItemShortPress = this.props.onShortPress;
+    let onSongItemLongPress = this.props.onLongPress;
+
+    if(onSongItemShortPress === undefined){
+      onSongItemShortPress = info => this.songItemSelectedHandler(info.item.key)
+    }
+
+    if(onSongItemLongPress === undefined){
+      onSongItemLongPress = info => this.songItemSelectedHandler(info.item.key)
+    }
+
+
     return (
       <View style={styles.container}>
         {modalView}
         <FlatList
+          keyboardShouldPersistTaps={'handled'}
           ListHeaderComponent={this.props.headerComponent}
           ListFooterComponent={this.props.footerComponent}
           data={this.props.data.queue}
           extraData={this.props.data.position}
-          keyboardShouldPersistTaps="always"
           renderItem={info => {
             return (
               <SongItem
                 trackData={info.item}
                 playingPosition={this.props.data.position}
                 trackPosition={info.index}
-                onLongPress={() => this.songItemSelectedHandler(info.item.key)}
-                onShortPress={() => this.props.onClick(info.index)}
+                onLongPress={() => onSongItemLongPress(info)}
+                onShortPress={() => onSongItemShortPress(info)}
               />
             );
           }}

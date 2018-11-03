@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, StyleSheet } from "react-native";
 import { connect } from "react-redux";
-import { changeSong, deleteSong, addSong } from "../../store/actions/index";
+import { changeSong, deleteSong, addSong } from "../../store/actions";
 
 import Header from "../../components/Header/Header";
 import SongDisplay from "../../components/SongDisplay/SongDisplay";
@@ -9,12 +9,12 @@ import SpotifyPlayer from "../../components/SpotifyPlayer/SpotifyPlayer";
 import SearchBtn from "../../components/Search/SearchBtn";
 import SearchModal from "../../components/Search/SearchModal";
 
-class PlayerLayout extends Component {
+class SquadifyPlayerScreen extends Component {
   state = {
-    onSearchModalOpen: false
+    onSearchModalOpen: false,
   };
 
-  onModalOpenHandler = () => {
+  onSearchModalOpenHandler = () => {
     if (this.state.onSearchModalOpen === false) {
       this.setState({
         ...this.state,
@@ -38,12 +38,12 @@ class PlayerLayout extends Component {
       <View style={styles.container}>
         <SearchModal
           onSearchModalOpen={this.state.onSearchModalOpen}
-          onSearchModelHandler={() => this.onModalOpenHandler()}
+          onSearchModelHandler={() => this.onSearchModalOpenHandler()}
         />
-        <Header rightComponent={<SearchBtn onModalOpenHandler={this.onModalOpenHandler}/>}/>
+        <Header rightComponent={<SearchBtn onModalOpenHandler={this.onSearchModalOpenHandler}/>}/>
         <SongDisplay
           data={songDisplayData}
-          onClick={key => this.props.onChangeSong(key)}
+          onShortPress={key => this.props.onChangeSong(key)}
           modalOptions={[0, 2]}
         />
         <SpotifyPlayer />
@@ -78,4 +78,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PlayerLayout);
+)(SquadifyPlayerScreen);

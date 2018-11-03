@@ -3,20 +3,20 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 const startTabs = () => {
   Promise.all([
-    Icon.getImageSource("md-home", 30),
+    Icon.getImageSource("md-person", 30),
     Icon.getImageSource("ios-musical-notes", 30),
   ]).then(sources => {
     Navigation.startTabBasedApp({
       tabs: [
         {
-          screen: "squadify.home",
-          label: "Home",
+          screen: "squadify.UserAccountScreen",
+          label: "My Account",
           icon: sources[0],
           navigatorStyle: { navBarHidden: true }
         },
 
         {
-          screen: "squadify.PlayerLayout",
+          screen: "squadify.SquadifyPlayerScreen",
           label: "Squadify",
           icon: sources[1],
           navigatorStyle: { navBarHidden: true }

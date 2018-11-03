@@ -15,6 +15,11 @@ export const deleteSong = (key) => {
 };
 
 export const changeSong = (position) => {
+
+    if(position.index !== undefined){
+        position = position.index;
+    }
+
     return {
         type: CHANGE_SONG,
         position: position

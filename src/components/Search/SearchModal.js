@@ -52,7 +52,6 @@ class SearchModal extends Component {
       <View style={styles.container}>
         <SongDisplay
           data={this.state.trackData}
-          onClick={null}
           headerComponent={this.renderHead}
           modalOptions={[1]}
         />

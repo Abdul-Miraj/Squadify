@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Text, Button, Linking } from "react-native";
+import { View, StyleSheet, Text, Button} from "react-native";
 
 import startSingleScreen from "../SingleScreen/startSingleScreen";
 import startMainTabs from "../MainTabs/startMainTabs";
 
 import Spotify from "rn-spotify-sdk";
 
-class Lobby extends Component {
+class LogInScreen extends Component {
   constructor() {
     super();
     this.state = {
@@ -149,4 +149,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Lobby;
+export default LogInScreen;
